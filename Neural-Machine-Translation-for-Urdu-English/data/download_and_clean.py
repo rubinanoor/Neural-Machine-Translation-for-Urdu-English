@@ -122,7 +122,7 @@ CORPORA: List[Dict] = [
         "source"    : "ur",
         "target"    : "en",
         "max_pairs" : None,
-        "role"      : "train_and_val",
+        "role"      : "train",
         "quality"   : "high",
     },
     {
@@ -332,12 +332,10 @@ def run_pipeline(base_dir: str, seed: int = 42) -> None:
         os.makedirs(d, exist_ok=True)
         print(f"Directory ready: {d}")
 
-    # Accumulators for the three splits
-    train_pairs: List[SentencePair] = []
-    val_pairs:   List[SentencePair] = []
-    test_pairs:  List[SentencePair] = []
-
+    #One master list for all cleaned data
+    all_cleaned_pairs: List[SentencePair] = []
     corpus_stats: Dict = {}
+
 
     # -------------------------------------------------------------------------
     # Step 1: Download and clean each corpus
@@ -347,116 +345,68 @@ def run_pipeline(base_dir: str, seed: int = 42) -> None:
     print("=" * 70)
 
     for cfg in CORPORA:
-        name = cfg["name"]
-        print(f"\n{'─' * 60}")
-        print(f"Processing: {name}")
-        print(f"{'─' * 60}")
+            name = cfg["name"]
+            raw_pairs = download_opus_corpus(cfg["corpus"], cfg["source"], cfg["target"], raw_dir)
 
-        # Download
-        raw_pairs = download_opus_corpus(
-            corpus_name = cfg["corpus"],
-            source_lang = cfg["source"],
-            target_lang = cfg["target"],
-            raw_dir     = raw_dir,
-        )
+            if not raw_pairs:
+                continue
 
-        if not raw_pairs:
-            print(f"  Skipping {name} — no pairs downloaded.")
-            corpus_stats[name] = {"raw": 0, "cleaned": 0, "role": cfg["role"]}
-            continue
+            cleaned = clean_corpus(raw_pairs, cfg["quality"], cfg["max_pairs"], name)
 
-        # Clean
-        cleaned = clean_corpus(
-            pairs       = raw_pairs,
-            quality     = cfg["quality"],
-            max_pairs   = cfg["max_pairs"],
-            corpus_name = name,
-        )
+            if cleaned:
+                all_cleaned_pairs.extend(cleaned)
+                save_tsv(cleaned, os.path.join(cleaned_dir, f"{name}_cleaned.tsv"))
 
-        if not cleaned:
-            print(f"  WARNING: {name} produced 0 clean pairs after filtering!")
-            corpus_stats[name] = {"raw": len(raw_pairs), "cleaned": 0, "role": cfg["role"]}
-            continue
+            corpus_stats[name] = {
+                "raw": len(raw_pairs),
+                "cleaned": len(cleaned),
+                "retention_pct": round(len(cleaned) / len(raw_pairs) * 100, 1),
+                "role": cfg.get("role", "train"),
+                "quality": cfg["quality"]
+            }
 
-        # Save per-corpus cleaned TSV (useful for debugging individual corpora)
-        save_tsv(cleaned, os.path.join(cleaned_dir, f"{name}_cleaned.tsv"))
+        
 
-        # Route to the correct split
-        role = cfg["role"]
-
-        if role == "test_only":
-            test_pairs.extend(cleaned)
-            print(f"  Routed {len(cleaned):,} pairs → TEST")
-
-        elif role == "train_and_val":
-            # Shuffle TED2020 before splitting so the val set gets diverse topics
-            random.shuffle(cleaned)
-            val_size  = min(2_000, int(len(cleaned) * 0.06))
-            val_pairs.extend(cleaned[:val_size])
-            train_pairs.extend(cleaned[val_size:])
-            print(f"  Routed {val_size:,} pairs → VALIDATION")
-            print(f"  Routed {len(cleaned) - val_size:,} pairs → TRAINING")
-
-        else:   # "train"
-            train_pairs.extend(cleaned)
-            print(f"  Routed {len(cleaned):,} pairs → TRAINING")
-
-        corpus_stats[name] = {
-            "raw"           : len(raw_pairs),
-            "cleaned"       : len(cleaned),
-            "retention_pct" : round(len(cleaned) / len(raw_pairs) * 100, 1),
-            "role"          : role,
-            "quality"       : cfg["quality"],
-        }
 
     # -------------------------------------------------------------------------
-    # Step 2: Deduplication
+    # Step 2: Global Shuffle and Percentage Split
     # -------------------------------------------------------------------------
     print("\n" + "=" * 70)
-    print("STEP 2 — DEDUPLICATION")
+    print("STEP 2 — GLOBAL SHUFFLE & PERCENTAGE SPLIT (98/1/1)")
     print("=" * 70)
 
-    # 2a. Deduplicate within the training set on the Urdu source side
+    # Shuffle the entire pool so domains are mixed
+    random.shuffle(all_cleaned_pairs)
+
+    total_len = len(all_cleaned_pairs)
+    
+    # Calculate 1% for Val and 1% for Test
+    test_size = max(1000, int(total_len * 0.01))
+    val_size  = max(1000, int(total_len * 0.01))
+
+    # Slice the master list
+    test_pairs  = all_cleaned_pairs[:test_size]
+    val_pairs   = all_cleaned_pairs[test_size : test_size + val_size]
+    train_pairs = all_cleaned_pairs[test_size + val_size :]
+
+    # -------------------------------------------------------------------------
+    # Step 3: Deduplication (Clean the training set specifically)
+    # -------------------------------------------------------------------------
     train_pairs = deduplicate(train_pairs, key="source")
+    train_pairs = remove_cross_split_overlap(train_pairs, val_pairs + test_pairs)
 
-    # 2b. Remove any training pair whose Urdu sentence also appears in val/test
-    #     (cross-split contamination prevention)
-    train_pairs = remove_cross_split_overlap(
-        train_pairs,
-        reference_pairs=val_pairs + test_pairs,
-    )
 
+# -------------------------------------------------------------------------
+    # Step 4: Save final splits
     # -------------------------------------------------------------------------
-    # Step 3: Shuffle training data
-    # -------------------------------------------------------------------------
-    print("\n" + "=" * 70)
-    print("STEP 3 — SHUFFLE TRAINING DATA")
-    print("=" * 70)
-    # After merging corpora the data is domain-sorted (all CCAligned first, etc.)
-    # Shuffling ensures every mini-batch sees a mix of domains and styles.
-    random.shuffle(train_pairs)
-    print(f"  Training data shuffled. Preview of first 3 pairs:")
-    for i, (ur, en) in enumerate(train_pairs[:3], 1):
-        print(f"    [{i}] UR: {ur[:70]}")
-        print(f"         EN: {en[:70]}")
-
-    # -------------------------------------------------------------------------
-    # Step 4: Save final splits to disk
-    # -------------------------------------------------------------------------
-    print("\n" + "=" * 70)
-    print("STEP 4 — SAVE FINAL SPLITS")
-    print("=" * 70)
-
     save_tsv(train_pairs, os.path.join(final_dir, "train.tsv"))
     save_tsv(val_pairs,   os.path.join(final_dir, "val.tsv"))
     save_tsv(test_pairs,  os.path.join(final_dir, "test.tsv"))
 
-    # Urdu-only text for SentencePiece tokenizer training
-    urdu_only_path = os.path.join(final_dir, "urdu_train_only.txt")
-    with open(urdu_only_path, "w", encoding="utf-8") as f:
+    # Save Urdu-only text for tokenizer
+    with open(os.path.join(final_dir, "urdu_train_only.txt"), "w", encoding="utf-8") as f:
         for urdu, _ in train_pairs:
             f.write(urdu + "\n")
-    print(f"  Saved Urdu-only text → {urdu_only_path}")
 
     # -------------------------------------------------------------------------
     # Step 5: Statistics report
@@ -470,10 +420,12 @@ def run_pipeline(base_dir: str, seed: int = 42) -> None:
     print("─" * 75)
     for cname, stats in corpus_stats.items():
         if stats["raw"] > 0:
-            print(
-                f"{cname:<20} {stats['raw']:>10,} {stats['cleaned']:>10,} "
-                f"{stats.get('retention_pct', 0):>9.1f}%  {stats['role']:<20}"
-            )
+            # Use .get() to provide a fallback value so it never crashes again
+            role_label = stats.get('role', 'combined_pool') 
+            retention = stats.get('retention_pct', 0)
+            
+            print(f"{cname:<20} {stats['raw']:>10,} {stats['cleaned']:>10,} "
+                  f"{retention:>9.1f}%  {role_label:<20}")
 
     # Split summary with average lengths
     print_split_summary(train_pairs, val_pairs, test_pairs)
