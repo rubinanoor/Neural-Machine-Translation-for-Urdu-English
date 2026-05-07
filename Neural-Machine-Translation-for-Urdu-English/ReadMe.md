@@ -2,6 +2,7 @@
 ---
 
 # Urdu-English Neural Machine Translation (NMT)
+
 ## Data Engineering & Pre-processing Phase
 
 This repository contains the end-to-end data pipeline for an Urdu-to-English NMT system. Our primary research focus (**RQ1**) is investigating the impact of **BPE (Byte Pair Encoding) Vocabulary Size** on the translation quality of morphologically rich languages like Urdu.
@@ -15,6 +16,26 @@ We have successfully implemented a high-performance data ingestion and cleaning 
 * **Total Raw Pairs Ingested:** ~775,000
 * **Final Cleaned Training Set:** ~18,000 - 750,000 pairs (depending on configuration).
 * **Noise Rejection:** Successfully filtered ~66% of "noisy" data in technical corpora (GNOME) while maintaining 97%+ retention in high-quality corpora (TED2020/Tanzil).
+
+
+---
+
+## Active Project Files (Current Phase)
+For the current phase of the project (Data Pipeline & Baseline Evaluation), the following files are the most relevant:
+
+### Data Processing (`/data`)
+* **`download_and_clean.py`**: The main orchestrator. Manages downloading, cleaning, and the final train/val/test split.
+* **`cleaning_filters.py`**: Contains heuristic "gates" (script detection, length bounds, ratio checks) to determine sentence pair quality.
+* **`normalization.py`**: Handles character-level cleanup (converting Arabic/Persian Unicode variants into standard Urdu characters).
+* **`utils.py`**: General utility functions for I/O, deduplication, and logging.
+
+### Model & Evaluation (`/model`)
+* **`config.py`**: Centralized configuration management for evaluation parameters, hyper-parameters, and directory paths.
+* **`evaluate.py`**: Contains the logic for running inference on the test set and computing BLEU/ChrF++ metrics using MarianMT.
+
+### Notebooks & Output
+* **`notebooks/baseline.ipynb`**: The primary Kaggle execution environment used to run the pipeline and generate the baseline results.
+* **`results/`**: Directory containing evaluation artifacts, including `baseline_predictions.txt` and `baseline_metrics.json`.
 
 
 ---
@@ -40,9 +61,9 @@ urdu-en-nmt/
 │   └── config.py                 ← Hyperparameters as a dataclass/dict
 │
 ├── notebooks/
-│   ├── 01_data_pipeline.ipynb    ← Kaggle implementation: calls data/ scripts
+│   ├── 01_data_pipeline.ipynb    
 │   ├── 02_tokenizer_ablation.ipynb
-│   └── 03_training.ipynb
+│   └── baseline.ipynb.          ← Kaggle implementation for benchmarking
 │
 ├── configs/
 │   ├── vocab_8k.yaml             ← Experiment configs for 8k subwords
@@ -58,19 +79,7 @@ urdu-en-nmt/
 ```
 ---
 
-##  Project Navigation & File Guide
 
-### Core Logic
-* **`data/download_and_clean.py`**: The main orchestrator. It manages the loop through corpora, calls the downloader, triggers cleaning, and performs the final train/val/test split.
-* **`data/cleaning_filters.py`**: Contains the heuristic "gates." This is where we define what makes a "good" sentence pair (e.g., length ratios, language detection, and script validation).
-* **`data/normalization.py`**: Handles character-level cleanup. It converts various Arabic/Persian Unicode variants into standard Urdu characters to reduce vocabulary sparsity.
-
-### Utilities & Data
-* **`manual_get.py`**: A standalone helper script. Use this if the automated `opustools` library fails; it fetches Moses-format files directly via HTTP.
-* **`my_data_test/final/`**: **Look here for the results.** 
-    * `train.tsv`: The primary training file.
-    * `urdu_train_only.txt`: Used specifically for training the SentencePiece tokenizer.
-    * `stats.json`: Automated report for the Mid-Report (contains counts and retention %).
 
 
 
@@ -91,7 +100,7 @@ To run the full download → clean → split process, execute from the project r
 python -m data.download_and_clean --base-dir ./my_data_test
 ```
 
-
+Look in my_data_test/final/ for the outputs (train.tsv, urdu_train_only.txt, stats.json).
 
 ##  Technical Implementation Details
 
@@ -109,18 +118,20 @@ Each sentence pair is validated against:
 
 
 ### Datasets
-Using corpuses:  "GNOME","KDE4", "Ubuntu", "QED","TED2020", "Tanzil".
+Targeted: GNOME, KDE4, Ubuntu, QED, TED2020, Tanzil.
 
-Currently only GNOME, TED2020 and Tanzil are working. the rest have having issues because of XML alignment issues with opustools.
+Active: GNOME, TED2020, and Tanzil. (Others bypassed due to persistent upstream XML alignment issues).
+
+Noise Rejection: Successfully filtered ~66% of "noisy" data in technical corpora (GNOME) while maintaining 97%+ retention in high-quality corpora (TED2020/Tanzil).
 
 
 
 ---
 
 ##  Next Steps
-1. **Upload** the contents of `my_data_test/final/` to Kaggle.
-2. **Train Tokenizers**: Generate `8k`, `16k`, and `32k` BPE models.
-3. **Begin Training**: Baseline Transformer-Base model.
+1. Configure Custom Training Loops: Set up the Transformer training scripts using the custom 8k, 16k, and 32k tokenizers.
+
+2. Execute Ablation Study: Train models on the custom vocabulary sizes and evaluate against the 25.57 BLEU baseline.
 ```
 
 ---
