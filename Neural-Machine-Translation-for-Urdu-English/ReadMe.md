@@ -55,7 +55,7 @@ urdu-en-nmt/
 ├── requirements.txt              ← Dependency list (tqdm, opustools-pkg, langdetect)
 ├── .gitignore                    ← Configured to ignore /raw/ data and /venv/
 └── README.md
-
+```
 ---
 
 ##  Project Navigation & File Guide
@@ -72,16 +72,16 @@ urdu-en-nmt/
     * `urdu_train_only.txt`: Used specifically for training the SentencePiece tokenizer.
     * `stats.json`: Automated report for the Mid-Report (contains counts and retention %).
 
----
 
-## 🛠️ Setup & Execution
+
+##  Setup & Execution
 
 ### 1. Environment Setup
 Use a Python Virtual Environment to avoid library conflicts.
 ```bash
 python -m venv venv
-source venv/bin/activate  # Mac/Linux
-# venv\Scripts\activate   # Windows
+source venv/bin/activate  # Mac
+
 pip install tqdm opustools-pkg langdetect
 ```
 
@@ -91,9 +91,9 @@ To run the full download → clean → split process, execute from the project r
 python -m data.download_and_clean --base-dir ./my_data_test
 ```
 
----
 
-## 🧠 Technical Implementation Details
+
+##  Technical Implementation Details
 
 ### Bypassing Library Limitations
 Standard libraries like `opustools` often fail on macOS due to XML alignment errors. We solved this by implementing a **Direct Moses Ingestion** layer in `download_and_clean.py` that:
@@ -107,9 +107,17 @@ Each sentence pair is validated against:
 * **Length Bounds**: Rejects "empty" or "massive" sentences that usually represent alignment glitches.
 * **Cross-Split Overlap**: A safety check that deletes any training sentence that accidentally appears in our Test set, ensuring our evaluation is 100% fair.
 
+
+### Datasets
+Using corpuses:  "GNOME","KDE4", "Ubuntu", "QED","TED2020", "Tanzil".
+
+Currently only GNOME, TED2020 and Tanzil are working. the rest have having issues because of XML alignment issues with opustools.
+
+
+
 ---
 
-## 📈 Next Steps
+##  Next Steps
 1. **Upload** the contents of `my_data_test/final/` to Kaggle.
 2. **Train Tokenizers**: Generate `8k`, `16k`, and `32k` BPE models.
 3. **Begin Training**: Baseline Transformer-Base model.
