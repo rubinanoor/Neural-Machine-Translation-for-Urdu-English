@@ -1,0 +1,86 @@
+Baseline MarianMT — 20 Random Translation Samples
+Model : Helsinki-NLP/opus-mt-ur-en
+BLEU  : 25.57
+ChrF++: 46.65
+========================================================================
+
+[01] Urdu source : اے ایمان والو جو تمہیں رزق دیا گیا ہے اس میں سے راس خدا میں خرچ کرو قبل اسکے کہ وہ دن آجائے جس دن نہ تجارت ہوگی نہ دوستی کام آئے گی اور نہ سفارش. اورکافرین ہی اصل میں ظالمین ہیں
+      Model output: O ye who believe! Spend out of (the bounties) We have provided for you, before the Day comes when no bargaining (Will avail), nor friendship nor intercession. Those who reject Faith they are the wrong-doers.
+      Reference   : O you who believe! spend out of what We have given you before the day comes in which there is no bargaining, neither any friendship nor intercession, and the unbelievers-- they are the unjust.
+
+[02] Urdu source : پھر قیامت کے روز اللہ انہیں ذلیل و خوار کرے گا اور ان سے کہے گا "بتاؤ اب کہاں ہیں میرے وہ شریک جن کے لیے تم (اہل حق سے) جھگڑے کیا کرتے تھے؟" جن لوگوں کو دنیا میں علم حاصل تھا وہ کہیں گے "آج رسوائی اور بدبختی ہے کافروں کے لیے"
+      Model output: Then on the Day of Resurrection He will disgrace them and will say: Where are My partners, for whose sake ye opposed (My guidance)? Those who have been given knowledge will say: Disgrace this day and evil are upon the disbelievers,
+      Reference   : Then, on the Day of Resurrection, He will disgrace them, and say, 'Where are My "partners" for whose sake you used to defy [Allah]?' Those who were given knowledge will say, 'Indeed today disgrace and distress pursue the faithless.'
+
+[03] Urdu source : یا تم ان سے کچھ اجرت مانگتے ہہو تو وہ چٹی کے بوجھ میں دبے ہیں
+      Model output: Or do you ask them for a reward, so that they are over-burdened by debt?
+      Reference   : Or askest thou them for a wage, and so they are weighed down with debt?
+
+[04] Urdu source : اس کو ہم آسان راستے کے لیے سہولت دیں گے
+      Model output: We will ease him toward ease.
+      Reference   : Surely We will ease his way unto the state of ease.
+
+[05] Urdu source : بیشک رات اور دن کا بدلتا آنا اور جو کچھ اللہ نے آسمانوں اور زمین میں پیدا کیا ان میں نشانیاں ہیں ڈر والوں کے لیے،
+      Model output: In the alternation of night and day, and in all that Allah has created in the heavens and the earth, surely there are signs for people who are cautious.
+      Reference   : In the alternation of night and day, and in all that God has created in the heavens and the earth, there are signs for a God-fearing people.
+
+[06] Urdu source : جو لوگ یہ کہتے ہیں کہ اللہ نے ہم سے عہد لیا ہے کہ ہم اس وقت تک کسی رسول پر ایمان نہ لائیں جب تک وہ ایسی قربانی پیش نہ کرے جسے آسمانی آگ کھا جائے تو ان سے کہہ دیجئے کہ مجھ سے پہلے بہت سے رسول معجزات اور تمہاری فرمائش کے مطابق صداقت کی نشانی لے آئے پھر تم نے انہیں کیوں قتل کردیا اگر تم اپنی بات میں سچے ہو
+      Model output: To those who say: "God has ordained that we should not believe an apostle who does not bring burnt offerings," say: "Many an apostle had come to you before me with manifest proofs, even with what you mention; then why did you kill them if you were men of truth?"
+      Reference   : Those same men said, 'God has made covenant with us, that we believe not any Messenger until he brings to us a sacrifice devoured by fire.' Say: 'Messengers have come to you before me bearing clear signs, and that you spoke of; why therefore did you slay them, if you speak truly?'
+
+[07] Urdu source : اور میں تم سے اس (کام) کا بدلہ نہیں مانگتا۔ میرا بدلہ (خدائے) رب العالمین کے ذمے ہے
+      Model output: I do not ask you any reward for it; my reward lies only with the Lord of all the worlds.
+      Reference   : I do not ask you any reward for it; my reward lies only with the Lord of all the worlds.
+
+[08] Urdu source : اوراگروہ جو زمین میں درخت ہیں سب قلم ہوجائیں گے اور دریا سیاہی اس کے بعد اس دریا میں سات اور دریا سیاہی کے آ ملیں تو بھی الله کی باتیں ختم نہ ہوں بے شک الله زبردست حکمت والا ہے
+      Model output: If all the trees on earth were pens, and the sea [were] ink, with seven [more] seas added to it, the words of God would not be exhausted: for, truly, God is Almighty and Wise.
+      Reference   : Though all the trees in the earth were pens, and the sea-seven seas after it to replenish it, yet would the Words of God not be spent. God is All-mighty, All-wise.
+
+[09] Urdu source : یہ اس لیے کہ ان کے پاس ان کے رسول روشن دلیلیں لے کر آتے تھے تو وہ انکار کرتے تھے پس انہیں الله نے پکڑ لیا بے شک وہ بڑا قوت والا سخت عذاب دینے والا ہے
+      Model output: That was because their messengers kept bringing them clear proofs (of Allah's Sovereignty) but they disbelieved; so Allah seized them. Lo! He is Strong, severe in punishment.
+      Reference   : That was because their Messengers came to them with the clear signs; but they disbelieved, so God seized them. Surely He is All-strong, terrible in retribution.
+
+[10] Urdu source : تو ہم نے ان کی پکار سن لی۔ اور ان کو یحیی بخشے اور ان کی بیوی کو ان کے (حسن معاشرت کے) قابل بنادیا۔ یہ لوگ لپک لپک کر نیکیاں کرتے اور ہمیں امید سے پکارتے اور ہمارے آگے عاجزی کیا کرتے تھے
+      Model output: So We answered his call, and We bestowed upon him Yahya (John), and cured his wife (to bear a child) for him. Verily, they used to hasten on to do good deeds, and they used to call on Us with hope and fear, and used to humble themselves before Us.
+      Reference   : So We answered him, and gave him John, curing his wife (of sterility). They raced with each other in good works and called on Us out of yearning and awe, and they were humble to Us.
+
+[11] Urdu source : جس چیز کا تمہیں وعدہ دیا جاتا ہے وہ ضرور آنے والی ہے اور تم عاجز نہیں کر سکتے
+      Model output: Surely what you have been promised shall come to pass; and you do not have the power to frustrate (Allah).
+      Reference   : Lo! that which ye are promised will surely come to pass, and ye cannot escape.
+
+[12] Urdu source : یہی وہ جہنم ہے جس کو تم جھوٹ سمجھتے تھے
+      Model output: This is the fire which you used to give the lie to.
+      Reference   : "This is the Hell which you used to give the lie to."
+
+[13] Urdu source : پس جو مال تمہیں غنیمت میں حلال اور طیب ملا ہے اسے کھاؤ اور الله سے ڈرو بے شک الله بخشنے والا مہربان ہے
+      Model output: So consume what you have taken of war booty [as being] lawful and good, and fear Allah. Indeed, Allah is Forgiving and Merciful.
+      Reference   : Avail yourselves of the spoils you have taken as lawful and good, and be wary of Allah. Indeed Allah is all-forgiving, all-merciful.
+
+[14] Urdu source : پس ان کے عہد کو توڑ دینے ,آیات هخدا کے انکار کرنے اور انبیائ کو ناحق قتل کر دینے اور یہ کہنے کی بنا پر کہ ہمارے دلوں پر فطرتا غلاف چڑھے ہوئے ہیں حالانکہ ایسا نہیں ہے بلکہ خدا نے ان کے کفر کی بنا پر ان کے دلوں پر مہر لگادی ہے اور اب چند ایک کے علاوہ کوئی ایمان نہ لائے گا
+      Model output: But for their violation of their covenant, and their denial of God’s revelations, and their killing of the prophets unjustly, and their saying, “Our minds are closed.” In fact, God has sealed them for their disbelief, so they do not believe, except for a few.
+      Reference   : But for their violation of their covenant, and their denial of God's revelations, and their killing of the prophets unjustly, and their saying, "Our minds are closed." In fact, God has sealed them for their disbelief, so they do not believe, except for a few.
+
+[15] Urdu source : تو وہ اس کے پیٹ میں اس دن تک رہتا جس میں لوگ اٹھائے جائیں گے
+      Model output: he would certainly have remained inside the fish till the Day of Resurrection.
+      Reference   : he would certainly have remained inside the fish until the Day of Resurrection.
+
+[16] Urdu source : اس سے عنقریب سہل حساب لیا جائے گا
+      Model output: shall have an easy reckoning
+      Reference   : He will be judged with an easy account
+
+[17] Urdu source : اور جن لوگوں نے کفر کیا اور ہماری آیتوں کو جھٹلایا وہی لوگ دوزخ (میں جلنے) والے ہیں،
+      Model output: But those who disbelieve and deny Our revelations are the people of Hell.
+      Reference   : They who disbelieve and deny our Ayat (proofs, evidences, verses, lessons, signs, revelations, etc.) are those who will be the dwellers of the Hell-fire.
+
+[18] Urdu source : جو ان ایمان والوں کیلئے (سراسر) ہدایت و بشارت ہیں۔
+      Model output: a guidance and good tidings for the believers
+      Reference   : it is guidance and good news for the believers
+
+[19] Urdu source : پس تم مجھے یاد رکھو۔ میں تمہیں یاد رکھوں گا۔ اور میرا شکر ادا کرو۔ اور میری ناشکری نہ کرو۔
+      Model output: So remember Me, and I will remember you. And thank Me, and do not be ungrateful.
+      Reference   : Therefore remember Me, I will cause you to be spoken of and acknowledge My rights, and do not be ungrateful.
+
+[20] Urdu source : اور تمہارا پروردگار بخشنے والا صاحب رحمت ہے۔ اگر وہ ان کے کرتوتوں پر ان کو پکڑنے لگے تو ان پر جھٹ عذاب بھیج دے۔ مگر ان کے لئے ایک وقت (مقرر کر رکھا) ہے کہ اس کے عذاب سے کوئی پناہ کی جگہ نہ پائیں گے
+      Model output: But your Lord is Most forgiving, full of Mercy. If He were to call them (at once) to account for what they have earned, then surely He would have hastened their punishment: but they have their appointed time, beyond which they will find no refuge.
+      Reference   : And your Lord is Forgiving, the Lord of Mercy; were He to punish them for what they earn, He would certainly have hastened the chastisement for them; but for them there is an appointed time from which they shall not find a refuge.
+

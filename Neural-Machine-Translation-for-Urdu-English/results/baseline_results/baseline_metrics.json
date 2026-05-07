@@ -1,0 +1,15 @@
+{
+  "experiment": "baseline_marianmt",
+  "model": "Helsinki-NLP/opus-mt-ur-en",
+  "num_beams": 4,
+  "eval_samples": 2000,
+  "seed": 42,
+  "bleu": 25.57,
+  "chrf_plus_plus": 46.65,
+  "bleu_1gram": 55.47,
+  "bleu_2gram": 29.77,
+  "bleu_3gram": 19.05,
+  "bleu_4gram": 13.6,
+  "bp": 1.0,
+  "num_sentences": 2000
+}
