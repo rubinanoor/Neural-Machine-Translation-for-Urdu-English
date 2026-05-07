@@ -1,0 +1,19 @@
+# Data and local tests
+my_data_test/
+raw/
+
+# Python junk
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+
+# OS specific
+.DS_Store
+
+# Large model files
+*.pt
+*.pth
+*.bin
