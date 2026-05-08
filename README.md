@@ -35,6 +35,13 @@ For the current phase of the project (Data Pipeline & Baseline Evaluation), the 
 
 ### Notebooks & Output
 * **`notebooks/baseline.ipynb`**: The primary Kaggle execution environment used to run the pipeline and generate the baseline results.
+
+The notebook is not "training" a new model yet, but rather correctly evaluating the State-of-the-Art (SOTA) baseline (Helsinki-NLP/opus-mt-ur-en) to set the benchmark for your future experiments:
+
+Metric Success: The execution completed with a BLEU score of 25.57 and a ChrF++ of 46.65.
+
+Reliability: A Brevity Penalty (BP) of 1.0 indicates the model is producing translations of the correct length, confirming the baseline is stable.
+
 * **`results/`**: Directory containing evaluation artifacts, including `baseline_predictions.txt` and `baseline_metrics.json`.
 
 
