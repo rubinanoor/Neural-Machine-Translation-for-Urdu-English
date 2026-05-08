@@ -17,7 +17,37 @@ We have successfully implemented a high-performance data ingestion and cleaning 
 * **Final Cleaned Training Set:** ~18,000 - 750,000 pairs (depending on configuration).
 * **Noise Rejection:** Successfully filtered ~66% of "noisy" data in technical corpora (GNOME) while maintaining 97%+ retention in high-quality corpora (TED2020/Tanzil).
 
+---
 
+## Results Summary
+ 
+| System | BLEU | ChrF++ | Notes |
+|--------|------|--------|-------|
+| opus-mt-ur-en zero-shot | 25.35 | 44.86 | Approach 2 baseline, no fine-tuning |
+| opus-mt-ur-en + raw fine-tune | 21.40 | 42.55 | Approach 2, naive fine-tune degrades |
+| opus-mt-ur-en + 8k vocab | TBD | TBD | Latest Approach, cleaned data |
+| opus-mt-ur-en + 16k vocab | TBD | TBD | Latest Approach, cleaned data |
+| opus-mt-ur-en + 32k vocab | TBD | TBD | Latest Approach, cleaned data |
+ 
+All scores on OPUS-100 Urdu–English test set (2,000 pairs). SacreBLEU tokenize=13a.
+ 
+
+---
+
+## What Each Approach Is
+ 
+### Approach 2 — `approach2_baseline.py`
+**What:** Loads `opus-mt-ur-en`, evaluates zero-shot, then fine-tunes on raw unfiltered OPUS-100 (50k pairs)  
+**Key finding:** Fine-tuning on raw data **degrades** BLEU by ~4 points (25.35 → 21.40). Model was pretrained on full OPUS so re-training on a noisy subset causes interference.  
+**Purpose in report:** Establishes baseline and motivates need for data cleaning (Current Approach)  
+**Run on:** Kaggle GPU (T4), ~50 min for 3 epochs
+ 
+### Approach 3 — `data/` + `model/` + `tokenizer/` directories
+**What:** Same `opus-mt-ur-en` model BUT fine-tuned on **cleaned** OPUS data. Adds vocabulary ablation (8k/16k/32k BPE) as the main research contribution  
+**Key question:** Does cleaned data recover the degradation seen in Approach 2? Does vocab size matter?  
+**Purpose in report:** Main experimental contribution  
+**Run on:** Kaggle GPU (T4), ~48–80 min per vocab variant × 3 variants
+ 
 ---
 
 ## Active Project Files (Current Phase)
