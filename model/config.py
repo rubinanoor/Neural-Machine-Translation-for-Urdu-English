@@ -90,9 +90,9 @@ class BaselineConfig:
     # ------------------------------------------------------------------
     # These point to the TSV files produced by download_and_clean.py.
     # Change DATA_DIR via env variable on Kaggle (see module docstring).
-    test_tsv:  str = os.path.join(DATA_DIR, "processed", "test.tsv")
-    train_tsv: str = os.path.join(DATA_DIR, "processed", "train.tsv")
-    val_tsv:   str = os.path.join(DATA_DIR, "processed", "val.tsv")
+    test_tsv:  str = os.path.join(DATA_DIR, "final", "test.tsv")
+    train_tsv: str = os.path.join(DATA_DIR, "final", "train.tsv")
+    val_tsv:   str = os.path.join(DATA_DIR, "final", "val.tsv")
 
     # ------------------------------------------------------------------
     # Evaluation settings
