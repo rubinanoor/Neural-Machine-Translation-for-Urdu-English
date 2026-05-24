@@ -203,7 +203,6 @@ def build_tokenize_fn(tokenizer, max_len=128):
             padding=False,
         )
 
-        # FIX: no as_target_tokenizer()
         labels = tokenizer(
             text_target=batch["english"],
             max_length=max_len,
@@ -213,8 +212,6 @@ def build_tokenize_fn(tokenizer, max_len=128):
 
         model_inputs["labels"] = [
             [(t if t != tokenizer.pad_token_id else -100) for t in label]
-            if tokenizer.pad_token_id is None:
-                tokenizer.pad_token = tokenizer.eos_token
             for label in labels["input_ids"]
         ]
         return model_inputs
