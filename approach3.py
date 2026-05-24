@@ -36,6 +36,7 @@ import time
 
 import numpy as np
 import pandas as pd
+import tokenizer
 import torch
 from datasets import Dataset
 from sacrebleu.metrics import BLEU, CHRF
@@ -249,7 +250,7 @@ def step4_finetune(vocab_label: str, data: dict, output_dir: str) -> str:
 
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
-        
+
     # Load and tokenize data
     print("  Loading and tokenizing data...")
     train_ds = load_tsv(data["train_tsv"])
