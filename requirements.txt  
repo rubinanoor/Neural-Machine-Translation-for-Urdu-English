@@ -1,0 +1,11 @@
+transformers>=4.30.0
+datasets>=2.14.0
+sacrebleu>=2.3.0
+sentencepiece>=0.1.99
+sacremoses
+langdetect
+tqdm
+torch
+numpy
+pandas
+pyyaml
