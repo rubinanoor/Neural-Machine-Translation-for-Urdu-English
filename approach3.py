@@ -56,6 +56,11 @@ import random
 import sys
 import time
 
+import inspect
+from transformers import Seq2SeqTrainer
+
+
+
 import numpy as np
 import pandas as pd
 import torch
@@ -76,6 +81,9 @@ if _SCRIPT_DIR not in sys.path:
 
 from data.download_and_clean import run_pipeline
 from tokenizer.train_spm import run_tokenizer_training
+
+
+
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -297,6 +305,8 @@ def build_compute_metrics(tok):
     return compute_metrics
 
 
+
+
 def step4_finetune(size_label: str, data: dict, output_dir: str) -> str:
     """
     Fine-tune MarianMT using a subset of the cleaned training data.
@@ -368,16 +378,22 @@ def step4_finetune(size_label: str, data: dict, output_dir: str) -> str:
                                       label_pad_token_id=-100,
                                       pad_to_multiple_of=8)
 
+    import inspect
+    _trainer_params = inspect.signature(Seq2SeqTrainer.__init__).parameters
+    _tok_kwarg = "processing_class" if "processing_class" in _trainer_params else "tokenizer"
+
     trainer = Seq2SeqTrainer(
         model            = model,
         args             = args,
         train_dataset    = train_tokenized,
         eval_dataset     = val_tokenized,
-        tokenizer        = tok,          # FIX: was processing_class= (HF 4.38+ only)
+        **{_tok_kwarg: tok},
         data_collator    = collator,
         compute_metrics  = build_compute_metrics(tok),
         callbacks        = [EarlyStoppingCallback(early_stopping_patience=2)],
     )
+
+    
 
     t0 = time.time()
     trainer.train()
