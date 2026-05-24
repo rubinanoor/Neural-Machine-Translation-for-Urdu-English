@@ -242,7 +242,7 @@ def run_tokenizer_training(
     # ------------------------------------------------------------------
     # Step 1: Extract Urdu corpus once (shared across all vocab sizes)
     # ------------------------------------------------------------------
-    train_tsv  = os.path.join(data_dir, "processed", "train.tsv")
+    train_tsv  = os.path.join(data_dir, "final", "train.tsv")
     urdu_corpus = os.path.join(tokenizer_dir, "urdu_corpus.txt")
 
     print("\n[1/2] Extracting Urdu corpus...")
