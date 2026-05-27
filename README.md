@@ -7,6 +7,9 @@
 ### Research Question  Does BPE vocabulary size (8k / 16k / 32k) affect translation quality for morphologically rich Urdu?  
 ---
 
+The complete methodology, experiments, error analysis, and discussion are available in the project repor [urdu_english_nmt_report.pdf](urdu_english_nmt_report.pdf)
+
+---
 ## Results
 
 | System | BLEU | ChrF++ | Notes |
